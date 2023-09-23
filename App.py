@@ -1,113 +1,139 @@
 
 import re
+import os
+import datetime
 import csv
 import getpass
 from user import User
+from validation import Validation_class
+from project import Project
+
+
+
+def project_menu(user):
+    while True:
+        print("[1] Create a new Project")
+        print("[2] View the Projects")
+        print("[3] Edit Project")
+        print("[4] Delete Project")
+        print("[5] Exit")
+        choice = input("> Enter your choice: ")
+        if choice == "1":
+            Project.create_project(user)
+        elif choice == "2":
+            Project.list_projects(user)
+        elif choice == "3":
+            Project.edit_project()
+        elif choice == "4":
+            Project.delete_project()
+        elif choice == "5":
+            main()
+        else:
+            print("Please enter a valid choice")
+            continue
 
 
 
 #*****************************************************************************************
-def check_name_validation(name):
-    return True if name.isalpha() else  False
 
 
-def check_email_exist(email):
-    with open('users.csv', 'r') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row['email'] == email:
-                return True
-        return False
+validation = Validation_class()
+# project = Project()
 
-def check_email_validation(email):
-        if len(email) > 7:
-            if re.match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$", email) is not None:
-                return True
-        
-        return False
-
-def check_password_match(password,confirm_password):
-    return True if password == confirm_password else False
-
-def check_phone_validation(phone):
-    if len(phone) > 10:
-        if re.match("^01[0125][0-9]{8}$", phone) is not None:
-            # if re.match("r'^(?:\+?44)?[07]\d{9,13}$'", phoneNumber) is not None:
-            return True
-        return False
-
-while True:
-    print(f"===============================")
-    print(f"**Crowd Funding App**")
-    print("================================")
-    print("1. Create a new account")
-    print("2. Login")
-    print("3. Exit")
-    usre_choice = int(input(f"> your choice: "))
-
-    
-    if usre_choice == 1:
+def main():
+    while True:
         print(f"===============================")
-        print(f"**New account**")
+        print(f"**Crowd Funding App**")
         print("================================")
-        print('**ENTER YOUR DATA**')
-        while True:
-            first_name = input(f"> Enter your first name: ")
-            if not check_name_validation(first_name):
-                print('> PLEASE ENTER A VALID NAME.')
-                continue
-            break    
-        while True:
-            last_name = input(f"> Enter your last name: ")
-            if not check_name_validation(last_name):
-                print('> PLEASE ENTER A VALID NAME.')
-                continue
-            break    
-        while True:
-            email = input(f"> Enter your email: ")
-            if not check_email_validation(email):
-                print('> PLEASE ENTER A VALID EMAIL.')
-                continue
-            if check_email_exist(email):
-                print('> Email already exist - Please Enter another one.')
-                continue
-            break
+        print("[1] Create a new account")
+        print("[2] Login")
+        print("[3] Exit")
+        usre_choice = int(input(f"> your choice: "))
 
-        while True:
-            password = getpass.getpass(prompt=f"> Enter your password: ",)
-            if len(password) < 5:
-                print('> PLEASE ENTER PASSWORD GREATER THEN 8 DIGITS.')
-                continue
-            break    
-        while True:
-            confirm_password = getpass.getpass(prompt=f"> Confirm your password: ")
-            if not check_password_match(password,confirm_password):
-                print('> PASSWORD DOSN\'T MATCH')
-                continue
-            break
-        while True:
-            phone = input(f"> Enter your phone: ")
-            if not check_phone_validation(phone):
-                print('> PLEASE ENTER A VALID EGP PHONE NUMBER')
-                continue
-            break    
+        
+        if usre_choice == 1:
+            print(f"===============================")
+            print(f"**New account**")
+            print("================================")
+            print('**ENTER YOUR DATA**')
+            while True:
+                first_name = input(f"> Enter your first name: ")
+                if not validation.check_name_validation(first_name):
+                    print('> PLEASE ENTER A VALID NAME.')
+                    continue
+                break    
+            while True:
+                last_name = input(f"> Enter your last name: ")
+                if not validation.check_name_validation(last_name):
+                    print('> PLEASE ENTER A VALID NAME.')
+                    continue
+                break    
+            while True:
+                email = input(f"> Enter your email: ")
+                if not validation.check_email_validation(email):
+                    print('> PLEASE ENTER A VALID EMAIL.')
+                    continue
+                if validation.check_email_exist(email):
+                    print('> Email already exist - Please Enter another one.')
+                    continue
+                break
+
+            while True:
+                password = getpass.getpass(prompt=f"> Enter your password: ",)
+                if len(password) < 5:
+                    print('> PLEASE ENTER PASSWORD GREATER THEN 8 DIGITS.')
+                    continue
+                break    
+            while True:
+                confirm_password = getpass.getpass(prompt=f"> Confirm your password: ")
+                if not validation.check_password_match(password,confirm_password):
+                    print('> PASSWORD DOSN\'T MATCH')
+                    continue
+                break
+            while True:
+                phone = input(f"> Enter your phone: ")
+                if not validation.check_phone_validation(phone):
+                    print('> PLEASE ENTER A VALID EGP PHONE NUMBER')
+                    continue
+                break    
+                
             
-        
-        
-        user = User(first_name, last_name, email, password,phone)
-        user.save_user()
-        print(f"=====================================")
-        print(f"**Account created successfully**")
-        print(f"=====================================")
+            
+            user = User(first_name, last_name, email, password,phone)
+            user.save_user()
+            print(f"=====================================")
+            print(f"**Account created successfully**")
+            print(f"=====================================")
 
-        
+            
+        elif usre_choice == 2:
+            print(f"==============================")
+            print(f"\tLogin")
+            print(f"==============================")
 
-    elif usre_choice == 3:
-        print(f"**Exiting**")
-        break
+            while True:
+                login_email= input(f"> Enter Your Email: ")
+                login_passowrd= getpass.getpass(prompt=f"> Enter your password: ")
+            
+                if validation.check_user(login_email,login_passowrd):
+                    print(f"=====================================")
+                    print(f"**Login successful**")
+                    print(f"=====================================")
+                    project_menu(login_email)
+                    
+                else:
+                    print(f"**Invalid credentials**")
+                    continue
+                
+            
+        elif usre_choice == 3:
+            print(f"**Exiting**")
+            break
 
-    else:
-        print(f"**Invalid choice**")
-        continue
+        else:
+            print(f"**Invalid choice**")
+            continue
 
     
+if __name__ == "__main__":
+    main()
