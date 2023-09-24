@@ -23,9 +23,9 @@ def project_menu(user):
         elif choice == "2":
             Project.list_projects(user)
         elif choice == "3":
-            Project.edit_project()
+            Project.edit_project(user)
         elif choice == "4":
-            Project.delete_project()
+            Project.delete_project(user)
         elif choice == "5":
             main()
         else:
@@ -42,20 +42,20 @@ validation = Validation_class()
 
 def main():
     while True:
-        print(f"===============================")
-        print(f"**Crowd Funding App**")
-        print("================================")
+        print(f"\t==================================")
+        print(f"\t\t**Crowd Funding App**")
+        print("\t===================================\n")
         print("[1] Create a new account")
         print("[2] Login")
-        print("[3] Exit")
+        print("[3] Exit\n")
         usre_choice = int(input(f"> your choice: "))
 
         
         if usre_choice == 1:
-            print(f"===============================")
-            print(f"**New account**")
-            print("================================")
-            print('**ENTER YOUR DATA**')
+            print(f"\t===================================")
+            print(f"\t\t**New account**")
+            print("\t====================================\n")
+            print('\t\t**ENTER YOUR DATA**')
             while True:
                 first_name = input(f"> Enter your first name: ")
                 if not validation.check_name_validation(first_name):
@@ -101,37 +101,37 @@ def main():
             
             user = User(first_name, last_name, email, password,phone)
             user.save_user()
-            print(f"=====================================")
-            print(f"**Account created successfully**")
-            print(f"=====================================")
+            print(f"\n\n\t==========================================")
+            print(f"\t\t**Account created successfully**")
+            print(f"\t==========================================\n\n")
 
             
         elif usre_choice == 2:
-            print(f"==============================")
-            print(f"\tLogin")
-            print(f"==============================")
+            print(f"\n\t=================================")
+            print(f"\t\tLogin")
+            print(f"\t=================================\n")
 
             while True:
                 login_email= input(f"> Enter Your Email: ")
                 login_passowrd= getpass.getpass(prompt=f"> Enter your password: ")
             
                 if validation.check_user(login_email,login_passowrd):
-                    print(f"=====================================")
-                    print(f"**Login successful**")
-                    print(f"=====================================")
+                    print(f"\n\t========================================")
+                    print(f"\t\t**Login successful**")
+                    print(f"\t========================================\n\n")
                     project_menu(login_email)
                     
                 else:
-                    print(f"**Invalid credentials**")
+                    print(f"\t\t**Invalid credentials**")
                     continue
                 
             
         elif usre_choice == 3:
-            print(f"**Exiting**")
-            break
+            print(f"\t\t**Exiting**")
+            exit()
 
         else:
-            print(f"**Invalid choice**")
+            print(f"\t\t**Invalid choice**")
             continue
 
     

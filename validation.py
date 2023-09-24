@@ -48,7 +48,32 @@ class Validation_class:
 #*******************************************************************
 
     def check_title(self,project_title):
-        if len(project_title) > 5 and project_title[0].isalpha():
+        if len(project_title) >= 5 and project_title[0].isalpha():
+            return True
+        else:
+            return False
+
+    def check_disc(self,project_disc):
+        if len(project_disc) >= 5 and project_disc[0].isalpha():
+            return True
+        else:
+            return False
+    
+    def check_target(self,target):
+        if target.isnumeric() and int(target) < 25000:
+            return True
+        else:
+           return False
+
+    def check_start_date(self,start_date):
+        today = str(datetime.date.today())
+        if re.match(r'^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$', start_date) and self.check_date(today, start_date):
+            return True
+        else:
+            return False
+    
+    def check_end_date(self,start_date,end_date):
+        if re.match(r'^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$', end_date) and self.check_date(start_date, end_date):
             return True
         else:
             return False
