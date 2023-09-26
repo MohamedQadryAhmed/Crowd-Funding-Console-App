@@ -92,13 +92,13 @@ class Project:
         with open('projects.csv','r') as f:
             reader = csv.DictReader(f)
             i = 1
-            print("\n\n\n========List Projects============")
+            print("\n\n\n==========================List Projects======================================")
             for row in reader:
                 if row['user'] == user:
-                    print(f"[{i}] {row['title']}")
+                    print(f"[{i}] {row['title']} \t {row['description']} \t {row['target']} \t {row['start_date']} \t {row['end_date']}")
                     projects.append(row)
                     i += 1
-            print("===============T=================\n\n\n")
+            print("=============================================================================\n\n\n")
             return projects
 
     def update_project(user,head,old_value,new_value):
